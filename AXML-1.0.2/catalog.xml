@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://www.w3.org/2001/XMLSchema.xsd" uri="xml-resources/jaxb/XMLSchema/www.w3.org/2001/XMLSchema.xsd"/>
+    <system systemId="file:/D:/NetBeansProjects/ALib/AXML-1.0.1/XMLSchema.xsd" uri="xml-resources/jaxb/XMLSchema/XMLSchema.xsd"/>
+</catalog>
