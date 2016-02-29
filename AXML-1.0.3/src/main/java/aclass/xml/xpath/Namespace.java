@@ -16,90 +16,89 @@ import javax.xml.namespace.NamespaceContext;
 
 /**
  *
- * @author Пользователь
+ * @author anatol
  */
 public class Namespace implements NamespaceContext
 {
 //---------------------------------------------------------------------------
- private final Map<String, String> urisByPrefix = new HashMap<String, String>();
- private final Map<String, Set> prefixesByURI = new HashMap<String, Set>();
+    private final Map<String, String> urisByPrefix = new HashMap<String, String>();
+    private final Map<String, Set> prefixesByURI = new HashMap<String, Set>();
 //---------------------------------------------------------------------------
- public Namespace()
- {
-  addNamespace(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
-  addNamespace(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
- }
+    public Namespace()
+    {
+        addNamespace(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
+        addNamespace(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+    }
 //---------------------------------------------------------------------------
- public Namespace(Namespace namespace)
- {
-  addNamespace(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
-  addNamespace(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
-  urisByPrefix.clear();
-  urisByPrefix.putAll(namespace.urisByPrefix);
-  prefixesByURI.clear();
-  prefixesByURI.putAll(namespace.prefixesByURI);
- }
+    public Namespace(Namespace namespace)
+    {
+        addNamespace(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
+        addNamespace(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+        urisByPrefix.clear();
+        urisByPrefix.putAll(namespace.urisByPrefix);
+        prefixesByURI.clear();
+        prefixesByURI.putAll(namespace.prefixesByURI);
+    }
 //---------------------------------------------------------------------------
- public Namespace(String prefix, String namespaceURI)
- {
-  addNamespace(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
-  addNamespace(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
-  addNamespace(prefix, namespaceURI);
- }
+    public Namespace(String prefix, String namespaceURI)
+    {
+        addNamespace(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
+        addNamespace(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+        addNamespace(prefix, namespaceURI);
+    }
 //---------------------------------------------------------------------------
- public synchronized final void addNamespace(String prefix, String namespaceURI)
- {
-  urisByPrefix.put(prefix, namespaceURI);
-  if (prefixesByURI.containsKey(namespaceURI))
-  {
-   (prefixesByURI.get(namespaceURI)).add(prefix);
-  }
-  else
-  {
-   Set<String> set = new HashSet<String>();
-   set.add(prefix);
-   prefixesByURI.put(namespaceURI, set);
-  }
- }
+    public synchronized final void addNamespace(String prefix, String namespaceURI)
+    {
+        urisByPrefix.put(prefix, namespaceURI);
+        if (prefixesByURI.containsKey(namespaceURI))
+        {
+            prefixesByURI.get(namespaceURI).add(prefix);
+        }
+        else
+        {
+            Set<String> set = new HashSet<String>();
+            set.add(prefix);
+            prefixesByURI.put(namespaceURI, set);
+        }
+    }
 //---------------------------------------------------------------------------
- /**
-  * добавляет Namespace.<br />
-  *
-  * @param xmlns пример значения: xmlns:rev="http://smev.gosuslugi.ru/rev111111"
-  * @throws AException в случае ошибки
-  */
- public synchronized final void addNamespace(String xmlns) throws AException
- {
-//  String xmlns="xmlns:rev=\"http://smev.gosuslugi.ru/rev111111\"";
-  xmlns = xmlns.trim();
-  if (!xmlns.startsWith("xmlns:")) throw new AException("\"" + xmlns + "\"is not xmlns");
-  xmlns = xmlns.substring(6);
-  int pos = xmlns.indexOf("=");
-  String prefix = xmlns.substring(0, pos);
-  String namespaceURI = xmlns.substring(pos + 2, xmlns.length() - 1);
-  addNamespace(prefix, namespaceURI);
- }
+    /**
+     * добавляет Namespace.<br />
+     *
+     * @param xmlns пример значения: xmlns:rev="http://smev.gosuslugi.ru/rev111111"
+     * @throws AException в случае ошибки
+     */
+    public synchronized final void addNamespace(String xmlns) throws AException
+    {
+        xmlns = xmlns.trim();
+        if (!xmlns.startsWith("xmlns:")) throw new AException("\"" + xmlns + "\"is not xmlns");
+        xmlns = xmlns.substring(6);
+        int pos = xmlns.indexOf("=");
+        String prefix = xmlns.substring(0, pos);
+        String namespaceURI = xmlns.substring(pos + 2, xmlns.length() - 1);
+        addNamespace(prefix, namespaceURI);
+    }
 //---------------------------------------------------------------------------
- @Override
- public String getNamespaceURI(String prefix)
- {
-  if (prefix == null) throw new IllegalArgumentException("prefix = null");
-  if (!urisByPrefix.containsKey(prefix)) return XMLConstants.NULL_NS_URI;
-  return (String) urisByPrefix.get(prefix);
- }
+    @Override
+    public String getNamespaceURI(String prefix)
+    {
+        if (prefix == null) throw new IllegalArgumentException("prefix = null");
+        if (!urisByPrefix.containsKey(prefix)) return XMLConstants.NULL_NS_URI;
+        return (String) urisByPrefix.get(prefix);
+    }
 //---------------------------------------------------------------------------
- @Override
- public String getPrefix(String namespaceURI)
- {
-  return (String) getPrefixes(namespaceURI).next();
- }
+    @Override
+    public String getPrefix(String namespaceURI)
+    {
+        return (String) getPrefixes(namespaceURI).next();
+    }
 //---------------------------------------------------------------------------
- @Override
- public Iterator getPrefixes(String namespaceURI)
- {
-  if (namespaceURI == null) throw new IllegalArgumentException("namespaceURI = null");
-  if (!prefixesByURI.containsKey(namespaceURI)) return Collections.EMPTY_SET.iterator();
-  return ((Set) prefixesByURI.get(namespaceURI)).iterator();
- }
+    @Override
+    public Iterator getPrefixes(String namespaceURI)
+    {
+        if (namespaceURI == null) throw new IllegalArgumentException("namespaceURI = null");
+        if (!prefixesByURI.containsKey(namespaceURI)) return Collections.EMPTY_SET.iterator();
+        return prefixesByURI.get(namespaceURI).iterator();
+    }
 //---------------------------------------------------------------------------
 }

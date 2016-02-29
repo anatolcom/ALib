@@ -34,7 +34,7 @@ import org.w3c.dom.NodeList;
 
 /**
  *
- * @author Пользователь
+ * @author anatol
  */
 public class ADOM extends AClass
 {
@@ -215,7 +215,6 @@ public class ADOM extends AClass
 //---------------------------------------------------------------------------
  public static String getNodeValue(Document doc, String nodeName) throws AException
  {
-//  sendGlobalWarning("getNodeValue","Function is under development",null);
   try
   {
    if (!doc.hasChildNodes()) return null;//???
@@ -232,7 +231,6 @@ public class ADOM extends AClass
 //---------------------------------------------------------------------------
  public static String getNodeValue(Node rootNode, String nodeName) throws AException
  {
-//  sendGlobalWarning("getNodeValue","Function is under development",null);
   try
   {
    if (!rootNode.hasChildNodes()) return null;//???

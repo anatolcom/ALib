@@ -2,16 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package anatol.aweb;
+package aclass.aweb;
 
+import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
+ * Класс управляющий списком веб параметров {@link AWebParam}.<br />
  *
  * @author Anatol
  * @version 0.1.0.0
@@ -19,57 +20,47 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder =
 {
- "name", "value"
 })
-@XmlRootElement(name = "WebParam")
-public class AWebParam
+@XmlRootElement(name = "WebParamList")
+public class AWebParamList
 {
 //---------------------------------------------------------------------------
- @XmlAttribute(name = "Name", required = true)
- public String name = null;
- @XmlElement(name = "Value", required = true)
- public String value = null;
+ @XmlElement(name = "TemplateInfo")
+ private ArrayList<AWebParam> list = new ArrayList<AWebParam>();
 //---------------------------------------------------------------------------
- public AWebParam()
+ public ArrayList<AWebParam> getList()
  {
+  return list;
  }
 //---------------------------------------------------------------------------
- public AWebParam(String name, String value)
+ public void add(AWebParam value)
  {
-  this.name = name;
-  this.value = value;
+  list.add(value);
  }
 //---------------------------------------------------------------------------
- public AWebParam(AWebParam value) throws Exception
+ public AWebParam get(int index)
  {
-  assign(value);
+  return list.get(index);
  }
 //---------------------------------------------------------------------------
- public final void assign(AWebParam value) throws Exception
+ public void set(int index, AWebParam item)
  {
-  if (value == null) throw new Exception("value=null");
-  this.name = value.name;
-  this.value = value.value;
+  list.set(index, item);
  }
 //---------------------------------------------------------------------------
- public String getName()
+ public int count()
  {
-  return name;
+  return list.size();
  }
 //---------------------------------------------------------------------------
- public void setName(String name)
+ public void remove(int index)
  {
-  this.name = name;
+  list.remove(index);
  }
 //---------------------------------------------------------------------------
- public String getValue()
+ public void clear()
  {
-  return value;
- }
-//---------------------------------------------------------------------------
- public void setValue(String value)
- {
-  this.value = value;
+  list.clear();
  }
 //---------------------------------------------------------------------------
 }

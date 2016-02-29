@@ -21,7 +21,7 @@ import org.w3c.dom.NodeList;
 
 /**
  *
- * @author Пользователь
+ * @author anatol
  */
 public class AXPath
 {

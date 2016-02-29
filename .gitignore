@@ -64,6 +64,4 @@ $RECYCLE.BIN/
 build
 dist
 nbproject
-/AClass/target/
-/AWeb-1.0.2/target/
-/ACache-1.0.1/target/
+target
