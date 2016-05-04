@@ -7,6 +7,7 @@ package aclass.xml.dom;
 import aclass.AClass;
 import aclass.AException;
 import aclass.xml.xpath.Namespace;
+import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -361,9 +362,11 @@ public class ADOM extends AClass
    StringWriter stringWriter = new StringWriter();
    StreamResult xmlOutput = new StreamResult(stringWriter);
    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-   transformerFactory.setAttribute("indent-number", indent);
+//   transformerFactory.setAttribute("indent-number", indent);
    Transformer transformer = transformerFactory.newTransformer();
    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//   transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, String.valueOf(indent));
+   transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", String.valueOf(indent));
    transformer.transform(xmlInput, xmlOutput);
    return xmlOutput.getWriter().toString();
   }

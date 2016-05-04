@@ -5,11 +5,8 @@
 package aclass.aparser.object;
 
 import aclass.aparser.type.AType;
-import aclass.aparser.type.AUnionHeader;
 import aclass.AClass;
 import aclass.AException;
-import aclass.aparser.action.AReturn;
-import aclass.aparser.operation.AFunction;
 import aclass.aparser.operation.AOperationList;
 
 /**
@@ -42,7 +39,6 @@ public abstract class AObject extends AClass//AOperation
 //---------------------------------------------------------------------------
 /**
  * @return тип объекта
- * @throws AException в случае ошибки
  */
  public final AType typeof(){return type;}
 //---------------------------------------------------------------------------
