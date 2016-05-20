@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SFN
 {
 //---------------------------------------------------------------------------
+    public static final String TEXT_UTF8 = "text/plain;charset=UTF-8";
     public static final String HTML_UTF8 = "text/html;charset=UTF-8";
     public static final String JSON_UTF8 = "application/json;charset=UTF-8";
     public static final String XML_UTF8 = "text/xml;charset=UTF-8";
