@@ -4,6 +4,9 @@
  */
 package aclass;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 /**
  * Суперкласс для классов генерирующих сообщения с иерархией классов.<br />
  *
@@ -13,7 +16,7 @@ package aclass;
 public class AClass
 {
 //---------------------------------------------------------------------------
-    public static ALog Log = ALog.getInstance();
+    public static ALog log = ALog.getInstance();
 //---------------------------------------------------------------------------
     private AClass FParent = null;
 //---------------------------------------------------------------------------
@@ -22,27 +25,6 @@ public class AClass
      */
     public AClass()
     {
-    }
-//---------------------------------------------------------------------------
-    /**
-     * Конструктор присвоения.<br />
-     *
-     * @param value - экземпляр класса AClass, данные которого будут скопированны.
-     */
-    public AClass(AClass value) throws Exception
-    {
-        assign(value);
-    }
-//---------------------------------------------------------------------------
-    /**
-     * Присвоение данных.<br />
-     *
-     * @param value - экземпряр класса.
-     */
-    public final void assign(final AClass value) throws Exception
-    {
-        if (value == null) throw new Exception("value=null");
-        FParent = value.FParent;
     }
 //---------------------------------------------------------------------------
     /**
@@ -56,10 +38,10 @@ public class AClass
         if (FParent != null)
         {
             value += FParent.classNameStack();
-//   value+=":"+getClass().getSimpleName();
+//            value += ":" + getClass().getSimpleName();
             value += ":" + getClass().getName();
         }
-//  else value+=getClass().getSimpleName();
+//        else value += getClass().getSimpleName();
         else value += getClass().getName();
         return value;
     }
@@ -75,7 +57,7 @@ public class AClass
     {
         try
         {
-            Log.addInfo(classNameStack() + "." + fnName + "(" + msg + ")");
+            log.addInfo(classNameStack(), fnName, msg);
         }
         catch (Exception ex)
         {
@@ -95,7 +77,7 @@ public class AClass
     {
         try
         {
-            Log.addWarning(classNameStack() + "." + fnName + "(" + msg + ")");
+            log.addWarning(classNameStack(), fnName, msg);
         }
         catch (Exception ex)
         {
@@ -114,7 +96,7 @@ public class AClass
     {
         try
         {
-            Log.addError(classNameStack() + "." + fnName + "(" + msg + ")");
+            log.addError(classNameStack(), fnName, msg);
         }
         catch (Exception ex)
         {
@@ -185,8 +167,7 @@ public class AClass
     {
         try
         {
-//            Log.addInfo("..." + fnName + "(" + msg + ")");
-            Log.addInfo(null, fnName, msg);
+            log.addInfo(null, fnName, msg);
         }
         catch (Exception ex)
         {
@@ -206,8 +187,7 @@ public class AClass
     {
         try
         {
-//            Log.addWarning("..." + fnName + "(" + msg + ")");
-            Log.addWarning(null, fnName, msg);
+            log.addWarning(null, fnName, msg);
         }
         catch (Exception ex)
         {
@@ -226,8 +206,7 @@ public class AClass
     {
         try
         {
-//            Log.addError("..." + fnName + "(" + msg + ")");
-            Log.addError(null, fnName, msg);
+            log.addError(null, fnName, msg);
         }
         catch (Exception ex)
         {
@@ -239,8 +218,23 @@ public class AClass
     {
         try
         {
-//            Log.addError(className + "." + fnName + "(" + msg + ")");
-            Log.addError(className, fnName, msg);
+            log.addError(className, fnName, msg);
+        }
+        catch (Exception ex)
+        {
+            System.err.println("error exception: " + ex.getMessage());
+        }
+    }
+//---------------------------------------------------------------------------
+    public static void stackTrace(String fnName, Exception exception)
+    {
+        try
+        {
+            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+            PrintStream ps = new PrintStream(new ByteArrayOutputStream());
+            exception.printStackTrace(ps);
+            ps.close();
+            log.addError(null, fnName, byteBuffer.toString());
         }
         catch (Exception ex)
         {
