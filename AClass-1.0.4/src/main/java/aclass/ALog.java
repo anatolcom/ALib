@@ -64,33 +64,11 @@ public class ALog extends AClass
     public class LogItem
     {
         public final LogType type;
-        public final String text;
-        public final Date date;
-        public LogItem(LogType type, String text, Date date)
-        {
-            this.type = type;
-            this.text = text;
-            this.date = date;
-        }
-        @Override
-        public String toString()
-        {
-            return type + " " + text;
-        }
-        public String toStringWithDate()
-        {
-            return type + " " + AFN.dateToIsoFormat(date) + " " + text;
-        }
-    }
-//---------------------------------------------------------------------------
-    public class ExLogItem
-    {
-        public final LogType type;
         public final String className;
         public final String functionName;
         public final String message;
         public final Date date;
-        public ExLogItem(LogType type, String className, String functionName, String message, Date date)
+        public LogItem(LogType type, String className, String functionName, String message, Date date)
         {
             this.type = type;
             this.className = className;
@@ -122,8 +100,7 @@ public class ALog extends AClass
         }
     }
 //---------------------------------------------------------------------------
-    private final List<LogItem> logItems = new LinkedList();
-    private final CopyOnWriteArrayList<ExLogItem> items = new CopyOnWriteArrayList();
+    private final CopyOnWriteArrayList<LogItem> logItems = new CopyOnWriteArrayList();
 //---------------------------------------------------------------------------
     private int itemLimit = 1024;
     private String path = "";
@@ -155,42 +132,45 @@ public class ALog extends AClass
     public synchronized void addInfo(String text) throws Exception
     {
         if (text == null) throw new Exception("text = null");
-        LogItem item = new LogItem(LogType.Info, text, new Date());
-        add(item);
+//        LogItem item = new LogItem(LogType.Info, text, new Date());
+//        add(item);
+        addInfo(null, null, text);
     }
 //---------------------------------------------------------------------------
     public void addWarning(String text) throws Exception
     {
         if (text == null) throw new Exception("text = null");
-        LogItem item = new LogItem(LogType.Warning, text, new Date());
-        add(item);
+//        LogItem item = new LogItem(LogType.Warning, text, new Date());
+//        add(item);
+        addWarning(null, null, text);
     }
 //---------------------------------------------------------------------------
     public void addError(String text) throws Exception
     {
         if (text == null) throw new Exception("text = null");
-        LogItem item = new LogItem(LogType.Error, text, new Date());
-        add(item);
+//        LogItem item = new LogItem(LogType.Error, text, new Date());
+//        add(item);
+        addError(null, null, text);
     }
 //---------------------------------------------------------------------------
     public synchronized void addInfo(String className, String functionName, String message) throws Exception
     {
         if (message == null) throw new Exception("msg = null");
-        ExLogItem item = new ExLogItem(LogType.Info, className, functionName, message, new Date());
+        LogItem item = new LogItem(LogType.Info, className, functionName, message, new Date());
         add(item);
     }
 //---------------------------------------------------------------------------
     public synchronized void addWarning(String className, String functionName, String message) throws Exception
     {
         if (message == null) throw new Exception("msg = null");
-        ExLogItem item = new ExLogItem(LogType.Warning, className, functionName, message, new Date());
+        LogItem item = new LogItem(LogType.Warning, className, functionName, message, new Date());
         add(item);
     }
 //---------------------------------------------------------------------------
     public synchronized void addError(String className, String functionName, String message) throws Exception
     {
         if (message == null) throw new Exception("msg = null");
-        ExLogItem item = new ExLogItem(LogType.Error, className, functionName, message, new Date());
+        LogItem item = new LogItem(LogType.Error, className, functionName, message, new Date());
         add(item);
     }
 //---------------------------------------------------------------------------
@@ -200,48 +180,6 @@ public class ALog extends AClass
     {
         if (item == null) throw new Exception("item = null");
         logItems.add(item);
-        trimItemList();
-        if (forvarding != null)
-        {
-            try
-            {
-                forvarding.log(item);
-            }
-            catch (Exception ex)
-            {
-                System.out.println(item.toStringWithDate());
-            }
-        }
-        else
-        {
-            switch (item.type)
-            {
-                case Info:
-                    System.out.println(item.toStringWithDate());
-//                    logger.info(item.toString());
-                    logger.logp(Level.INFO, "..", "method", item.text);
-                    break;
-                case Warning:
-                    System.out.println(item.toStringWithDate());
-//                    logger.warning(item.toString());
-                    logger.logp(Level.WARNING, "..", "method", item.text);
-                    break;
-                case Error:
-                    System.err.println(item.toStringWithDate());
-//                    logger.severe(item.toString());
-                    logger.logp(Level.SEVERE, "..", "method", item.text);
-                    break;
-            }
-
-//            System.out.println(item.toStringWithDate());
-        }
-        updated();
-    }
-//---------------------------------------------------------------------------
-    public synchronized void add(ExLogItem item) throws Exception
-    {
-        if (item == null) throw new Exception("item = null");
-        items.add(item);
         trimItemList();
         Level leval = Level.ALL;
         switch (item.type)
@@ -258,6 +196,7 @@ public class ALog extends AClass
         }
         if (item.className == null) logger.logp(leval, "..", item.functionName, item.message);
         else logger.logp(leval, item.className, item.functionName, item.message);
+        updated();
     }
 //---------------------------------------------------------------------------
     private synchronized void updated() throws Exception

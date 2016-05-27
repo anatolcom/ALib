@@ -231,7 +231,7 @@ public class AClass
         try
         {
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-            PrintStream ps = new PrintStream(new ByteArrayOutputStream());
+            PrintStream ps = new PrintStream(byteBuffer);
             exception.printStackTrace(ps);
             ps.close();
             log.addError(null, fnName, byteBuffer.toString());

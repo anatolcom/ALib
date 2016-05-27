@@ -1,6 +1,6 @@
 package aclass.servlet;
 
-import static aclass.AClass.info;
+//import static aclass.AClass.info;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpRetryException;
@@ -36,14 +36,14 @@ public class HttpFunctionController
     private void map(Class<?> targetClass)
     {
         if (targetClass == null) return;
-        System.out.println("------------------------------   mapping   ------------------------------");
-        info("map", "target class: \"" + targetClass.getName() + "\"");
+//        System.out.println("------------------------------   mapping   ------------------------------");
+//        info("map", "target class: \"" + targetClass.getName() + "\"");
         Method[] mtds = targetClass.getDeclaredMethods();
         for (Method method : mtds)
         {
             HttpFunction annotation = method.getAnnotation(HttpFunction.class);
             if (annotation == null) continue;
-            info("map", " - function: \"" + method.getName() + "\" - pattern: \"" + annotation.pattern() + "\"");
+//            info("map", " - function: \"" + method.getName() + "\" - pattern: \"" + annotation.pattern() + "\"");
             functionMap.put(annotation.pattern(), method);
         }
     }
